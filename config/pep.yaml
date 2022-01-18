@@ -1,0 +1,22 @@
+pep_version: 2.0.0
+sample_table: "sample_table.csv"
+sample_modifiers:
+  imply:
+    - if:
+        workflow: "megahit"
+      then:
+        contigs: "megahit"
+    - if:
+        workflow: "spades"
+      then:
+        contigs: "spades"
+    - if:
+        workflow: "virsorter2"
+      then:
+        contigs: "virsorter2"
+  derive:
+    attributes: [contigs]
+    sources:
+      megahit: "results_old/Assembly/MEGAHIT/{sample_name}.contigs.fa.gz"
+      spades: "results_old/Assembly/SPAdes/{sample_name}_contigs.fasta"
+      virsorter2: "results_old/virsorter2_ok/{sample_name}/final-viral-combined.fa"
