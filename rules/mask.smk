@@ -3,7 +3,7 @@ rule tantan:
     input:
         rules.reformat.output[0],
     output:
-        temp("output/{sample}/{workflow}/tantan.fa"),
+        temp("output/{sample}/{workflow}/repeatmasker.fa"),
     params:
         extra="-x N", # mask low complexity using N
     resources:
