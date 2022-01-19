@@ -32,4 +32,5 @@ rule reformat:
         "python -u scripts/fix_fasta.py --input {input[0]} --output {output[0]}"
 
 include: "rules/common.smk"
+include: "rules/mask.smk"
 include: "rules/blast.smk"

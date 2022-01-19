@@ -21,7 +21,7 @@ rule get_virus_taxids:
 
 rule megablast_virus:
     input:
-        query=rules.reformat.output[0],
+        query=rules.repeatmasker.output.masked,
         taxidlist=rules.get_virus_taxids.output[0],
     output:
         out=temp("output/{sample}/{workflow}/megablast-virus.tsv"),
