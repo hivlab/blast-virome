@@ -9,6 +9,14 @@ pepfile: "config/pep.yaml"
 WRAPPER_PREFIX = "https://raw.githubusercontent.com/avilab/virome-wrappers"
 TAXON_DB = os.getenv("TAXON_DB")
 
+# Get contig files names
+def get_contigs(wildcards):
+    return pep.sample_table.loc[
+        (pep.sample_table["sample_name"] == wildcards.sample)
+        & (pep.sample_table["workflow"] == wildcards.workflow),
+        "contigs",
+    ]
+
 rule all:
     input:
         expand(["output/{sample}/{workflow}/contigs.fa", "output/{sample}/{workflow}/viruses.csv"], zip, sample=pep.sample_table["sample_name"], workflow=pep.sample_table["workflow"])

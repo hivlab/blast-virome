@@ -1,14 +1,5 @@
 import pandas as pd
 
-# Get contig files names
-def get_contigs(wildcards):
-    return pep.sample_table.loc[
-        (pep.sample_table["sample_name"] == wildcards.sample)
-        & (pep.sample_table["workflow"] == wildcards.workflow),
-        "contigs",
-    ]
-
-
 # Helper function to import tables
 def safely_read_csv(path, **kwargs):
     try:
