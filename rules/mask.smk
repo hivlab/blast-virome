@@ -34,5 +34,5 @@ rule repeatmasker:
     container:
         "docker://taavipall/repeatmasker-image"
     shell:
-        "RepeatMaster {input} -dir {params.outdir}"
+        "RepeatMasker {input} -dir {params.outdir}"
 
