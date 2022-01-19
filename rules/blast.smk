@@ -186,10 +186,10 @@ rule filter_viruses:
 rule merge_unassigned:
     input:
         expand(
-            "output/{{sample}}/{{workflow}}/{blastresult}/unmapped.fa",
+            "output/{{sample}}/{{workflow}}/{blastresult}_unmapped.fa",
             blastresult=BLAST
         ),
     output:
-        "output/{sample}_{workflow}_unassigned.fa",
+        "output/{sample}/{workflow}/unassigned.fa",
     shell:
         "cat {input} > {output}"

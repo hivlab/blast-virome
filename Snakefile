@@ -19,7 +19,7 @@ def get_contigs(wildcards):
 
 rule all:
     input:
-        expand(["output/{sample}/{workflow}/contigs.fa", "output/{sample}/{workflow}/viruses.csv"], zip, sample=pep.sample_table["sample_name"], workflow=pep.sample_table["workflow"])
+        expand(["output/{sample}/{workflow}/contigs.fa", "output/{sample}/{workflow}/viruses.csv", "output/{sample}/{workflow}/unassigned.fa"], zip, sample=pep.sample_table["sample_name"], workflow=pep.sample_table["workflow"])
 
 rule reformat:
     input:
