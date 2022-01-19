@@ -23,9 +23,10 @@ rule repeatmasker:
     output:
         masked=temp("output/{sample}/{workflow}/repeatmasker.fa.masked"),
         out=temp("output/{sample}/{workflow}/repeatmasker.fa.out"),
-        cat=temp("output/{sample}/{workflow}/repeatmasker.fa.cat"),
         tbl="output/{sample}/{workflow}/repeatmasker.fa.tbl",
+    shadow: "minimal"
     params:
+        extra="",
         outdir=lambda wildcards, output: os.path.dirname(output.masked),
     threads: 8
     resources:
@@ -34,5 +35,10 @@ rule repeatmasker:
     container:
         "docker://taavipall/repeatmasker-image"
     shell:
-        "RepeatMasker {input} -dir {params.outdir}"
+        """
+        RepeatMasker {params.extra} -pa {threads} {input} -dir {params.outdir}
+        if head -n 1 {output.out} | grep -q 'There were no repetitive sequences detected'; then
+            ln -sr {input} {output.masked} && touch {output.tbl}
+        fi
+        """
 
