@@ -8,7 +8,7 @@ VIRUSES_TAXID = 10239
 # Shadow=full ensures that only required outputs will be saved.
 rule get_virus_taxids:
     output:
-        f"output/{VIRUSES_TAXID}.taxids",
+        f"results/{VIRUSES_TAXID}.taxids",
     params:
         taxid=VIRUSES_TAXID,
     conda:
@@ -24,7 +24,7 @@ rule megablast_virus:
         query=rules.repeatmasker.output.masked,
         taxidlist=rules.get_virus_taxids.output[0],
     output:
-        out=temp("output/{sample}/{workflow}/megablast-virus.tsv"),
+        out=temp("results/{workflow}/{sample}/megablast-virus.tsv"),
     params:
         program="blastn",
         task="megablast",
@@ -46,8 +46,8 @@ rule parse_megablast_virus:
         query=rules.megablast_virus.input.query,
         blast_result=rules.megablast_virus.output.out,
     output:
-        mapped=temp("output/{sample}/{workflow}/megablast-virus_mapped.tsv"),
-        unmapped=temp("output/{sample}/{workflow}/megablast-virus_unmapped.fa"),
+        mapped=temp("results/{workflow}/{sample}/megablast-virus_mapped.tsv"),
+        unmapped=temp("results/{workflow}/{sample}/megablast-virus_unmapped.fa"),
     params:
         e_cutoff=1e-6,
         outfmt=rules.megablast_virus.params.outfmt,
@@ -66,7 +66,7 @@ rule blastn_virus:
         query=rules.parse_megablast_virus.output.unmapped,
         taxidlist=rules.get_virus_taxids.output[0],
     output:
-        out=temp("output/{sample}/{workflow}/blastn-virus.tsv"),
+        out=temp("results/{workflow}/{sample}/blastn-virus.tsv"),
     params:
         program="blastn",
         db="nt_v5",
@@ -87,8 +87,8 @@ rule parse_blastn_virus:
         query=rules.blastn_virus.input.query,
         blast_result=rules.blastn_virus.output.out,
     output:
-        mapped=temp("output/{sample}/{workflow}/blastn-virus_mapped.tsv"),
-        unmapped=temp("output/{sample}/{workflow}/blastn-virus_unmapped.fa"),
+        mapped=temp("results/{workflow}/{sample}/blastn-virus_mapped.tsv"),
+        unmapped=temp("results/{workflow}/{sample}/blastn-virus_unmapped.fa"),
     params:
         e_cutoff=1e-6,
         outfmt=rules.megablast_virus.params.outfmt,
@@ -103,7 +103,7 @@ rule megablast_nt:
     input:
         query=rules.parse_blastn_virus.output.unmapped,
     output:
-        out=temp("output/{sample}/{workflow}/megablast-nt.tsv"),
+        out=temp("results/{workflow}/{sample}/megablast-nt.tsv"),
     params:
         program="blastn",
         task="megablast",
@@ -125,8 +125,8 @@ rule parse_megablast_nt:
         query=rules.megablast_nt.input.query,
         blast_result=rules.megablast_nt.output.out,
     output:
-        mapped=temp("output/{sample}/{workflow}/megablast-nt_mapped.tsv"),
-        unmapped=temp("output/{sample}/{workflow}/megablast-nt_unmapped.fa"),
+        mapped=temp("results/{workflow}/{sample}/megablast-nt_mapped.tsv"),
+        unmapped=temp("results/{workflow}/{sample}/megablast-nt_unmapped.fa"),
     params:
         e_cutoff=1e-6,
         outfmt=rules.megablast_virus.params.outfmt,
@@ -145,10 +145,10 @@ BLAST = ["megablast-virus", "blastn-virus", "megablast-nt"]
 rule classify_all:
     input:
         expand(
-            "output/{{sample}}/{{workflow}}/{blastresult}_mapped.tsv", blastresult=BLAST
+            "results/{{workflow}}/{{sample}}/{blastresult}_mapped.tsv", blastresult=BLAST
         ),
     output:
-        temp("output/{sample}/{workflow}/all.csv"),
+        temp("results/{workflow}/{sample}/all.csv"),
     params:
         pp_sway=1,
         ranks_of_interest=RANKS_OF_INTEREST,
@@ -163,10 +163,10 @@ rule classify_all:
 # Split classification results into viruses and non-viral
 rule filter_viruses:
     input:
-        "output/{sample}/{workflow}/all.csv",
+        "results/{workflow}/{sample}/all.csv",
     output:
-        viral="output/{sample}/{workflow}/viruses.csv",
-        non_viral="output/{sample}/{workflow}/non-viral.csv",
+        viral="results/{workflow}/{sample}/viruses.csv",
+        non_viral="results/{workflow}/{sample}/non-viral.csv",
     params:
         ranks=RANKS_OF_INTEREST,
     resources:
@@ -186,10 +186,10 @@ rule filter_viruses:
 rule merge_unassigned:
     input:
         expand(
-            "output/{{sample}}/{{workflow}}/{blastresult}_unmapped.fa",
+            "results/{{workflow}}/{{sample}}/{blastresult}_unmapped.fa",
             blastresult=BLAST
         ),
     output:
-        "output/{sample}/{workflow}/unassigned.fa",
+        "results/{workflow}/{sample}/unassigned.fa",
     shell:
         "cat {input} > {output}"

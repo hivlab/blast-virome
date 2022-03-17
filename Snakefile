@@ -19,13 +19,13 @@ def get_contigs(wildcards):
 
 rule all:
     input:
-        expand(["output/{sample}/{workflow}/contigs.fa", "output/{sample}/{workflow}/viruses.csv", "output/{sample}/{workflow}/unassigned.fa"], zip, sample=pep.sample_table["sample_name"], workflow=pep.sample_table["workflow"])
+        expand(["results/{workflow}/{sample}/contigs.fa", "results/{workflow}/{sample}/viruses.csv", "results/{workflow}/{sample}/unassigned.fa"], zip, sample=pep.sample_table["sample_name"], workflow=pep.sample_table["workflow"])
 
 rule reformat:
     input:
         get_contigs,
     output:
-        "output/{sample}/{workflow}/contigs.fa",
+        "results/{workflow}/{sample}/contigs.fa",
     conda:
         f"{WRAPPER_PREFIX}/v0.2/subset_fasta/environment.yaml"
     shell:

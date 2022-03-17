@@ -3,7 +3,7 @@ rule tantan:
     input:
         rules.reformat.output[0],
     output:
-        temp("output/{sample}/{workflow}/repeatmasker.fa"),
+        temp("results/{workflow}/{sample}/repeatmasker.fa"),
     params:
         extra="-x N", # mask low complexity using N
     resources:
@@ -21,9 +21,9 @@ rule repeatmasker:
     input:
         rules.tantan.output[0],
     output:
-        masked=temp("output/{sample}/{workflow}/repeatmasker.fa.masked"),
-        out=temp("output/{sample}/{workflow}/repeatmasker.fa.out"),
-        tbl="output/{sample}/{workflow}/repeatmasker.fa.tbl",
+        masked=temp("results/{workflow}/{sample}/repeatmasker.fa.masked"),
+        out=temp("results/{workflow}/{sample}/repeatmasker.fa.out"),
+        tbl="results/{workflow}/{sample}/repeatmasker.fa.tbl",
     shadow: "minimal"
     params:
         extra="",
