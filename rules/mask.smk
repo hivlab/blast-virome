@@ -10,7 +10,7 @@ rule tantan:
         runtime=120,
         mem_mb=8000,
     wrapper:
-        "https://raw.githubusercontent.com/hivlab/virome-wrappers/v0.2/tantan"
+        f"{WRAPPER_PREFIX}/v0.2/tantan"
 
 
 # Repeatmasker

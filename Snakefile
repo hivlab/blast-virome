@@ -6,6 +6,7 @@ __license__ = "MIT"
 import os
 
 pepfile: "config/pep.yaml"
+WRAPPER_PREFIX = "https://raw.githubusercontent.com/hivlab/virome-wrappers"
 TAXON_DB = os.getenv("TAXON_DB")
 
 # Get contig files names
@@ -26,7 +27,7 @@ rule reformat:
     output:
         "results/{workflow}/{sample}/contigs.fa",
     conda:
-        "https://raw.githubusercontent.com/hivlab/virome-wrappers/v0.2/subset_fasta/environment.yaml"
+        f"{WRAPPER_PREFIX}/v0.2/subset_fasta/environment.yaml"
     shell:
         "python -u scripts/fix_fasta.py --input {input[0]} --output {output[0]}"
 
