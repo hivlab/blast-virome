@@ -6,7 +6,7 @@ __license__ = "MIT"
 import os
 
 pepfile: "config/pep.yaml"
-WRAPPER_PREFIX = "https://raw.githubusercontent.com/avilab/virome-wrappers"
+WRAPPER_PREFIX = "https://raw.githubusercontent.com/hivlab/virome-wrappers"
 TAXON_DB = os.getenv("TAXON_DB")
 
 # Get contig files names
