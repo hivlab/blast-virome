@@ -13,7 +13,10 @@ def fix_fasta(input, output, prefix=None):
     fixed_seqs = []
     with _open(input) as f:
         for record in SeqIO.parse(f, "fasta"):
+            if len(record.seq) == 0:
+                continue
             record.description = ""
+            record.id = record.id.replace("|", "_")
             if bool(prefix):
                 record.id = f"{prefix}_{record.id}"
             fixed_seqs.append(record)
@@ -24,7 +27,7 @@ def fix_fasta(input, output, prefix=None):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
-        "Updates FASTA record ids and removes their descriptions."
+        "Updates FASTA record ids and removes their descriptions. Removes empty fasta sequences."
     )
     parser.add_argument(
         "--input", metavar="FILE", help="input file in FASTA format", required=True
