@@ -12,7 +12,7 @@ rule get_virus_taxids:
     params:
         taxid=VIRUSES_TAXID,
     conda:
-        f"{WRAPPER_PREFIX}/v0.2/blast/query/environment.yaml"
+        "https://raw.githubusercontent.com/hivlab/virome-wrappers/v0.2/blast/query/environment.yaml"
     resources:
         runtime=120,
     shell:
@@ -37,7 +37,7 @@ rule megablast_virus:
         runtime=lambda wildcards, attempt: attempt * 120,
         mem_mb=26000,
     wrapper:
-        f"{WRAPPER_PREFIX}/v0.2/blast/query"
+        "https://raw.githubusercontent.com/hivlab/virome-wrappers/v0.2/blast/query"
 
 
 # Filter blastn hits for the cutoff value.
@@ -55,7 +55,7 @@ rule parse_megablast_virus:
         runtime=lambda wildcards, attempt: attempt * 120,
         mem_mb=4000,
     wrapper:
-        f"{WRAPPER_PREFIX}/v0.2/blast/parse"
+        "https://raw.githubusercontent.com/hivlab/virome-wrappers/v0.2/blast/parse"
 
 
 # Blastn, megablast and blastx input, output, and params keys must match commandline blast option names.
@@ -78,7 +78,7 @@ rule blastn_virus:
         runtime=lambda wildcards, attempt: 840 + (attempt * 120),
         mem_mb=26000,
     wrapper:
-        f"{WRAPPER_PREFIX}/v0.2/blast/query"
+        "https://raw.githubusercontent.com/hivlab/virome-wrappers/v0.2/blast/query"
 
 
 # Filter blastn hits for the cutoff value.
@@ -96,7 +96,7 @@ rule parse_blastn_virus:
         runtime=lambda wildcards, attempt: attempt * 120,
         mem_mb=4000,
     wrapper:
-        f"{WRAPPER_PREFIX}/v0.2/blast/parse"
+        "https://raw.githubusercontent.com/hivlab/virome-wrappers/v0.2/blast/parse"
 
 
 rule megablast_nt:
@@ -116,7 +116,7 @@ rule megablast_nt:
         runtime=lambda wildcards, attempt: attempt * 1440,
         mem_mb=96000,
     wrapper:
-        f"{WRAPPER_PREFIX}/v0.2/blast/query"
+        "https://raw.githubusercontent.com/hivlab/virome-wrappers/v0.2/blast/query"
 
 
 # Filter blastn hits for the cutoff value.
@@ -134,7 +134,7 @@ rule parse_megablast_nt:
         runtime=lambda wildcards, attempt: attempt * 120,
         mem_mb=4000,
     wrapper:
-        f"{WRAPPER_PREFIX}/v0.2/blast/parse"
+        "https://raw.githubusercontent.com/hivlab/virome-wrappers/v0.2/blast/parse"
 
 
 # Filter sequences by division id.
@@ -157,7 +157,7 @@ rule classify_all:
         runtime=lambda wildcards, attempt: attempt * 120,
         mem_mb=8000,
     wrapper:
-        f"{WRAPPER_PREFIX}/v0.2/blast/taxonomy"
+        "https://raw.githubusercontent.com/hivlab/virome-wrappers/v0.2/blast/taxonomy"
 
 
 # Split classification results into viruses and non-viral
